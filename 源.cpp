@@ -3,7 +3,6 @@
 	版权: Copyright littley & LyIc
 	作者:小y（欧博远） 
 	北京工业大学 210241班 21024112 欧博远 2022.春 高级语言程序设计课设课程作品
-	打包日期: 2022.5.2 若文件更改时间晚于此时间则文件无效。
 	项目组成：（在项目1至5中，仅需参与任意一个*计*分*项*目*，非计分项目不算（下面标记为#），项目4完成项目任务即可，1-4全部参与后解锁项目5，项目5参与完成后结束）
 	项目1：小y的音游板（提交的作业中不包含该项目）
 	项目1-1：下落式音游/See U for 123 seconds	#项目1-2：组合式音游/寻找自然时代(Instrumental)
@@ -544,8 +543,8 @@ int centregame() {
 		case(2):sprintf(s, _T("本环节需要您从以下两个翻牌实验中选择其中一个参与，并敲击项目序号")); break;
 		case(3):sprintf(s, __T("项目1：计算大师（选择项目1）")); break;
 		case(4):sprintf(s, _T("这里将挑战大家的心算能力，进入游戏后，正上方将不断下落数字卡片，")); break;
-		case(5):sprintf(s, _T("请你计算出数字卡片上算式的结果，并通过键盘敲击，敲击完成后按'+'确认，")); break;
-		case(6):sprintf(s, _T("按'-'删除最后一位数字。游戏将随时间增加难度，此时的难度为你的项目分数")); break;
+		case(5):sprintf(s, _T("请你计算出数字卡片上算式的结果，并通过键盘敲击，敲击完成后按'+'/回车确认，")); break;
+		case(6):sprintf(s, _T("按'-'/BackSpace删除最后一位数字。游戏将随时间增加难度，此时的难度为你的项目分数")); break;
 		case(7):sprintf(s, _T("（最多3位数加减乘除）")); break;
 		case(8):sprintf(s, _T("项目2：卡牌大师（选择项目：a~i对应难度1~9，难度9规则例外）")); break;
 		case(9):sprintf(s, _T("进入游戏后，将会出现一组随机的条件和范例卡牌，条件包含图案颜色、图案内容、")); break;
@@ -568,57 +567,6 @@ int centregame() {
 
 /**********************************************************小y的翻牌实验绘制结束**********************************************************/
 /**********************************************************小y的翻牌实验绘制结束**********************************************************/
-typedef struct cake//用于Cake信息
-{
-	int type;
-	int line;
-	int last;
-	int x;
-	struct cake* next;
-}Cake; 
-Cake* Create() {
-	srand(time(NULL));
-	int i = 0;
-	Cake* head = NULL, * end = NULL, * p;
-	head = (Cake*)malloc(sizeof(Cake));
-	srand(time(NULL));
-	end = head;
-	for (i = 0; i < 10; i++) {
-		p = (Cake*)malloc(sizeof(Cake));
-		if (p)
-		{
-			p->type = rand() % 3;
-			p->line = rand() % 3;
-			p->last = rand() % 500 + 500;
-			p->next = NULL;
-		}
-
-	}
-	return head;
-}
-int out(Cake* pt)
-{
-	IMAGE img;
-	loadimage(&img, _T("cake1.jpg"));
-	int y = 0;
-	putimage(100, 100, &img);
-	while (pt->next != NULL)
-	{
-		pt = pt->next;
-		y = 125 + 150 * pt->line;
-		//if(pt->type==1)
-	}
-	return 0;
-}
-int Dessertparty() {
-	cake* pt;
-	pt = Create();
-	out(pt);
-	//load();
-	return 0;
-}
-
-/*****************************小y的甜点派对绘制结束*****************************/
 typedef struct snake//用于Snack
 {
 	int x;
@@ -1025,7 +973,7 @@ int Greedysnake() {
 		if (eat(pt, upspeed)) {
 			usp += min(50 + 10 * level + 15 * int(level / 4), 200); ust += min(3000+300 * level, 6000); point += 1;
 			if (usp > min(50 + 10 * level + 15 * int(3 / 4), 200) * int(sqrt(2 * level + 1)))		usp = min(50 + 10 * level + 15 * int(3 / 4), 200) * int(sqrt(2 * level + 1));
-			if (ust > 10000 * level) { ust = 10000 * level; }
+			if (ust >= (3000 + 250 * level) *( int(level / 3.0) * 0.5 + 1)) { ust = (3000 + 250 * level) * (int(level / 3.0) * 0.5 + 1); }
 		}//临时速度增益拾取
 		if (usp != 0 && ust > 0) { ust -= 10000 / (150 + 20 * level + point + usp); }//临时速度增益计时
 		if (usp != 0 && ust <= 0) { usp = 0; ust = 0; }//临时速度增益结束
@@ -1055,7 +1003,7 @@ int Greedysnake() {
 	if (level < 0)level = 0;
 	if (level <= 1)return level;
 	else if(level <= 13)return int(level / 2 + 1);
-	switch (level) { case(14):return 7; break;	case(15):return 8; break;	case(16):return 8; break;	case(17):return 8; break;	case(18):return 9; break; }
+	else { switch (level) { case(14):return 7; break;	case(15):return 8; break;	case(16):return 8; break;	case(17):return 8; break;	case(18):return 9; break; } }
 }
 /*****************************小y的后院小蛇（？）绘制结束*****************************/
 int Vestibularbackyard() {
@@ -1086,7 +1034,7 @@ int Vestibularbackyard() {
 	switch (key)
 	{
 	//case('1'):point = Dessertparty(); break;
-	case('2'):point = Greedysnake(); break;
+	case('2'):point = Greedysnake(); savep(3, 2, point); break;
 	default:break;
 	}
 	return point;
@@ -1129,7 +1077,7 @@ void initStar(_STAR*& p) {
 	p->x = rand() % 850 + 50;					//50 - 850
 	p->y = rand() % 610 + 30;					//30-640
 	p->radius = rand() % MAX_RADIUS + 2;			// 2 - 7
-	p->status = int((rand() % 25 + 1) / 3);						            //状态0~8(rand%25+1[→1-26])/3[→0-8]
+	p->status = int((rand() % 25 + 1) / 3);			//状态0~8(rand%25+1[→1-26])/3[→0-8]
 	p->step = rand() % MAX_STEP + 1;				//步长 1- 9
 	int rgb = 255 * p->step / MAX_STEP;
 	p->color = RGB(rgb, rgb, rgb);					//颜色
@@ -1247,7 +1195,7 @@ int ending(int n) {
 	srand(time(NULL));
 	_STAR star;
 	if (n <= 1)	mciSendString("open Allthoughtsarestars.mp3 alias bkmusic", NULL, 0, NULL);
-	else if (n == 2)mciSendString("open Lifeline.mp3 alias bkmusic", NULL, 0, NULL);
+	else if (n == 2)mciSendString("open Makeaflowerfire.mp3 alias bkmusic", NULL, 0, NULL);
 	mciSendString("play bkmusic", NULL, 0, NULL); // 仅播放一次
 	int s_time = 0, t = 0;
 	star.color = YELLOW;	star.node.next = NULL; star.node.prev = NULL; star.radius = 5; star.status = 12; star.step = 3; star.x = 300; star.y = 300;
@@ -1282,11 +1230,11 @@ int ending(int n) {
 				case(3):sprintf(s, __T("最后祝全体教师身体健康，工作愉快，事业有成，祝各位同学生活快乐，")); break;
 				case(4):sprintf(s, _T("学习进步，健康成长，祝愿学校的明天更加美好!")); break;
 				case(5):sprintf(s, _T("没有一个冬天不可逾越, 我们相信, 大地回春、疫情消散、隔离解除, 就在不远的明天。")); break;
-				case(6):sprintf(s, _T("小y的信息中心（原小y测试团队，简记LyIc）")); break;
+				case(6):sprintf(s, _T("小y的信息中心（原小y测试团队）")); break;
 				case(7):sprintf(s, _T("北京工业大学 210241班 21024112 欧博远 ")); break;
 				case(8):sprintf(s, _T("2022.春 高级语言程序设计课设课程作品")); break;
 				}
-				if (i <= 6)outtextxy(40, 10 + 40 * i, s);
+				if (i <= 5)outtextxy(40, 10 + 40 * i, s);
 				else outtextxy(500, 10 + 40 * i, s);
 			}
 			settextstyle(12, 0, "微软雅黑");
@@ -1414,7 +1362,7 @@ void reckon(Clocktime *pt,int *ti) {
 		}
 	}
 }
-int Phantomspacetime() {
+int Phantomspacetime(int *to) {
 	int i, point = 0, t = 0, ta = 0;
 	int* ti = &t;
 	SYSTEMTIME time;
@@ -1462,6 +1410,7 @@ int Phantomspacetime() {
 	}
 	GetLocalTime(&time);
 	t = time.wMinute * 60000 + time.wSecond * 1000 + time.wMilliseconds - ta;
+	*to = t;
 	point = int(10 - sqrt(abs(t - 30000) / 60.0));
 	if (point < 0)point = 0;
 	sprintf(s, _T("time:%d ms/30000 ,point:%d"), t, point);		outtextxy(0, 0, s);
@@ -1473,13 +1422,15 @@ int Phantomspacetime() {
 
 int Starworld() {
 	int point = 0, project = 0;
-	int i,t;
+	int i, t = 0, * ti = &t;
 	settextstyle(24, 0, "微软雅黑");
 	cleardevice();
 	IMAGE bk;
 	loadimage(&bk, _T("bk50.jpg"));
 	putimage(0, 0, &bk);
 	while (project != 2) {
+		mciSendString("open Fireflyforest.mp3 alias bkmusic", NULL, 0, NULL);
+		mciSendString("play bkmusic", NULL, 0, NULL);
 		for (i = 1; i < 8; i++) {
 			switch (i)
 			{
@@ -1496,9 +1447,9 @@ int Starworld() {
 		key = _getch();
 		switch (key)
 		{
-		case('1'):if (project == 0) { t = ending(1); project++; savep(5, 1, 0, t); }break;
-		case('2'):if (project == 1) { point = Phantomspacetime(); savep(5, 2, point); if (point > 0)project++; else project--; } break;
-		default:project++; break;
+		case('1'):if (project == 0) { mciSendString("close bkmusic", NULL, 0, NULL); t = ending(1); project++; savep(5, 1, 0, t); }break;
+		case('2'):if (project == 1) { mciSendString("close bkmusic", NULL, 0, NULL); point = Phantomspacetime(ti); savep(5, 2, point, t); if (point > 0)project++; else project--; } break;
+		default:mciSendString("close bkmusic", NULL, 0, NULL); project = 2; break;
 		}
 	}
 	return point;
