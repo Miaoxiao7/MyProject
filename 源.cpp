@@ -16,7 +16,7 @@
 	项目5：小y的星河世界
 	项目5-1：小y的幻想时空		#项目5-2：小y的星河之旅
 	需要注意的问题：
-	其中参与到课设作业的项目有：2-1、3-2、3-3、5-1、5-2（包含有动态链表和/或文件记录的子项目）.
+	其中参与到课设作业的项目有：2-1、3-2、5-1、5-2（包含有动态链表和/或文件记录的子项目）.
 *********************************************************************/
 #include <stdio.h>
 #include <graphics.h>
@@ -57,28 +57,30 @@ char s[128],key;//
 void savep(int le,int fle, int n ) {//将游戏存档入文件里
 	char name[24];
 	srand(time(NULL));
-	time_t timer = time(NULL);
+	SYSTEMTIME time;
 	FILE* fp = NULL;
 	int error;
 	error = fopen_s(&fp, "./save.txt", "a");	//这里的返回值是，如果成功返回0，如果不成功返回非0
 	if (fp)
 	{
-		if (n!=0)		fprintf_s(fp, "完成项目%d-%d，完成信息：Time：%s; Level:%d\n", le, fle, ctime(&timer), n);
-		else fprintf_s(fp, "完成项目%d-%d，完成信息：Time：%s\n", le, fle, ctime(&timer));
+		GetLocalTime(&time);
+		if (n != 0)		fprintf_s(fp, "完成项目%d-%d，完成信息：Time：%d年%d月%d日 %d:%d:%d.%d ; Level:%d\n", le, fle, time.wYear, time.wMonth, time.wDay, time.wHour, time.wMinute, time.wSecond, time.wMilliseconds, n);
+		else fprintf_s(fp, "完成项目%d-%d，完成信息：Time：%d年%d月%d日 %d:%d:%d.%d\n", le, fle, time.wYear, time.wMonth, time.wDay, time.wHour, time.wMinute, time.wSecond, time.wMilliseconds);
 	}
 	_fcloseall();
 }
 void savep(int le, int fle, int n, int k) {//将游戏存档入文件里
 	char name[24];
 	srand(time(NULL));
-	time_t timer = time(NULL);
+	SYSTEMTIME time;
 	FILE* fp = NULL;
 	int error;
 	error = fopen_s(&fp, "./save.txt", "a");	//这里的返回值是，如果成功返回0，如果不成功返回非0
 	if (fp)
 	{
-		if (n != 0)		fprintf_s(fp, "完成项目%d-%d，完成信息：Time：%s; Level:%d/// %d\n", le, fle, ctime(&timer), n, k);
-		else fprintf_s(fp, "完成项目%d-%d，完成信息：Time：%s/// %d\n", le, fle, ctime(&timer), k);
+		GetLocalTime(&time);
+		if (n != 0)		fprintf_s(fp, "完成项目%d-%d，完成信息：Time：%d年%d月%d日 %d:%d:%d.%d ; Level:%d/// %d\n", le, fle, time.wYear, time.wMonth, time.wDay, time.wHour, time.wMinute, time.wSecond, time.wMilliseconds, n, k);
+		else fprintf_s(fp, "完成项目%d-%d，完成信息：Time：%d年%d月%d日 %d:%d:%d.%d /// %d\n", le, fle, time.wYear, time.wMonth, time.wDay, time.wHour, time.wMinute, time.wSecond, time.wMilliseconds, k);
 	}
 	_fcloseall();
 }
@@ -1508,7 +1510,7 @@ void save(int *a,int m) {//将游戏存档入文件里
 	int code[6] = { 0 };
 	srand(time(NULL));
 	code[0] = rand() % 9 + 1; code[1] = rand() % 9 + 1; code[2] = rand() % 9 + 1; code[3] = rand() % 9 + 1; code[4] = rand() % 9 + 1; code[5] = rand() % 9 + 1;
-	if (m==0)	InputBox(s, 10, _T("项目开始，请输入用户名："));
+	if (m==0)	InputBox(s, 10, _T("项目开始，请输入用户名：\n请您在弹出的窗口中选择数字“15”，在下一页中阅读用户手册,阅读完成后请您点击下方的提交按钮后返回此窗口\n感谢您的阅读*该窗口内容不参与项目评分\n小y的信息中心"));
 	else if (m==1) InputBox(s, 10, _T("项目结束，请再次输入用户名：\n如果您对本次课设提存在一些建议或意见，可以以文字或图片的形式填写在弹出的链接当中，谢谢！同时希望能够获得文件中的save.txt。"));
 	FILE* fp = NULL;
 	int error;
@@ -1543,10 +1545,10 @@ void initialization(int* p, int n,int *t)//初始界面绘制
 	solidroundrect(420, 615, 830, 665, 20, 20);
 	switch (n + 1)
 	{
-	case(1):sprintf(s, _T("第%d项：小y的■■■"), n + 1);		outtextxy(435, 630, s); putimage(468, 290, &img01); break;
+	case(1):sprintf(s, _T("此项目已隐藏"));		outtextxy(435, 630, s); putimage(468, 290, &img01); break;
 	case(2):sprintf(s, _T("第%d项：小y的翻牌实验"), n + 1);		outtextxy(435, 630, s); putimage(468, 290, &img02); break;
 	case(3):sprintf(s, _T("第%d项：小y的前庭后院"), n + 1);		outtextxy(435, 630, s); putimage(468, 290, &img03); break;
-	case(4):sprintf(s, _T("第%d项：小y的■■■"), n + 1);		outtextxy(435, 630, s); putimage(468, 290, &img04); break;
+	case(4):sprintf(s, _T("此项目已隐藏"));		outtextxy(435, 630, s); putimage(468, 290, &img04); break;
 	case(5):sprintf(s, _T("第%d项：小y的星河世界"),n + 1);		outtextxy(435, 630, s); putimage(468, 290, &img05); break;
 	case(6):sprintf(s, _T("End"));								outtextxy(435, 630, s); putimage(468, 290, &img06); break;
 
@@ -1589,9 +1591,11 @@ int main()
 {
 	initgraph(WIDTH, HEIGHT, EW_SHOWCONSOLE | EW_NOCLOSE);
 	int finish[6] = { -2,0,0,-2,-1,-1 };
-	int now = 0, t = 0;
+	int now = 1, t = 0;
 	int* a = &finish[0], * ti = &t;
 	save(a, 0);
+	system("start http://littley2013.mikecrm.com/Qg18qre");
+	Sleep(5000);
 	while (finish[4] > -2 && finish[4] < 8 && finish[5] == -1) {
 		if (*a * *(a + 1) * *(a + 2) * *(a + 3) == 0) { mciSendString("open HOME.mp3 alias initmusic", NULL, 0, NULL); }
 		else { mciSendString("open TheRightPath.mp3 alias initmusic", NULL, 0, NULL); }
