@@ -1496,7 +1496,7 @@ int Starworld() {
 		{
 		case('1'):if (project == 0) { t = ending(1); project++; savep(5, 1, 0, t); }break;
 		case('2'):if (project == 1) { point = Phantomspacetime(); savep(5, 2, point); if (point > 0)project++; else project--; } break;
-		default:break;
+		default:project++; break;
 		}
 	}
 	return point;
